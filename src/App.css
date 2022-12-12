@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+  background-color: lightgray;
 }
 
 .App-logo {
@@ -37,7 +42,37 @@
   }
 }
 
-input {
-  display: block;
-  margin: 0 auto;
+.form {
+  background-color: white;
+  border-radius: 5px;
+  width: 550px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  width: 90%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+select {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
 }

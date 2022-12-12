@@ -24,9 +24,11 @@ export default function Form() {
         setPassword(value);
         break;
       case "occupation":
+        console.log(value);
         setOccupation(value);
         break;
       case "location":
+        console.log(value);
         setLocation(value);
         break;
       default:
@@ -36,7 +38,17 @@ export default function Form() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: validate form data and submit it to your server
+    if (
+      fullname.trim().length === 0 ||
+      email.trim().length === 0 ||
+      occupation === "" ||
+      location === "" ||
+      occupation === "Select occupation" ||
+      location === "Select state"
+    ) {
+      alert("Please fill out all fields");
+      return;
+    }
     try {
       let res = await fetch(
         "https://frontend-take-home.fetchrewards.com/form",
@@ -49,11 +61,14 @@ export default function Form() {
             occupation: occupation,
             state: location,
           }),
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
       let resJson = await res.json();
       console.log(resJson);
-      if (res.states === 200) {
+      if (res.status >= 200 && res.status < 300) {
         setFullname("");
         setEmail("");
         setPassword("");
@@ -76,60 +91,95 @@ export default function Form() {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="username">Full Name:</label>
-      <input
-        type="text"
-        id="fullname"
-        name="fullname"
-        value={fullname}
-        onChange={handleChange}
-      />
-      <label htmlFor="email">Email:</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        value={email}
-        onChange={handleChange}
-      />
-      <label htmlFor="password">Password:</label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        value={password}
-        onChange={handleChange}
-      />
-      <label htmlFor="occupation">Occupation:</label>
-      <select
-        id="occupation"
-        name="occupation"
-        value={occupation}
-        onChange={handleChange}
-      >
-        {mapJobs.map((job, idx) => (
-          <option key={idx} value={job}>
-            {job}
-          </option>
-        ))}
-      </select>
-      <label htmlFor="location">State:</label>
-      <select
-        id="location"
-        name="location"
-        value={location}
-        onChange={handleChange}
-      >
-        {states.map((state, idx) => (
-          <option key={idx} value={state.name}>
-            {state.name}
-          </option>
-        ))}
-      </select>
-      <button onClick={(e) => handleSubmit(e)} type="submit">
-        Submit
-      </button>
-    </form>
+    <div className="form">
+      <div className="form-body">
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label className="form-label" htmlFor="username">
+              Full Name:
+            </label>
+            <input
+              className="form-input"
+              type="text"
+              id="fullname"
+              name="fullname"
+              value={fullname}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label className="form-label" htmlFor="email">
+              Email:
+            </label>
+            <input
+              className="form-input"
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label className="form-label" htmlFor="password">
+              Password:
+            </label>
+            <input
+              className="form-input"
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label className="form-label" htmlFor="occupation">
+              Occupation:
+            </label>
+            <select
+              className="form-input"
+              id="occupation"
+              name="occupation"
+              onChange={handleChange}
+              defaultValue={occupation[0]}
+            >
+              <option value={null}>Select occupation</option>
+              {mapJobs.map((job, idx) => (
+                <option key={idx} value={job}>
+                  {job}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="form-label" htmlFor="location">
+              State:
+            </label>
+            <select
+              className="form-input"
+              id="location"
+              name="location"
+              onChange={handleChange}
+              defaultValue={states[0]}
+            >
+              <option value={null}>Select state</option>
+              {states.map((state, idx) => (
+                <option key={idx} value={state.name}>
+                  {state.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button onClick={(e) => handleSubmit(e)} type="submit">
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
