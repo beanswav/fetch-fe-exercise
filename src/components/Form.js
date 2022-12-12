@@ -41,6 +41,7 @@ export default function Form() {
     if (
       fullname.trim().length === 0 ||
       email.trim().length === 0 ||
+      password.length === 0 ||
       occupation === "" ||
       location === "" ||
       occupation === "Select occupation" ||
